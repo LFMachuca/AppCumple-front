@@ -7,7 +7,7 @@ const RSVP = () => {
     const [event , setEvent]= useState(null)
     const {id} = useParams();
     useEffect(()=>{
-        axios(`${import.meta.env.API_URL}/events/${id}/rsvp`)
+        axios(`${import.meta.env.VITE_API_URL}/events/${id}/rsvp`)
         .then(res =>{
             const data = res.data.response;
             const getEvent = {id:res.data.response._id, ...data}
