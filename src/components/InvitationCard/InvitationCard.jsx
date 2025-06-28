@@ -11,7 +11,7 @@ const InvitationCard = ({ event }) => {
   const [attendance, setAttendance] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [additionalGuest, setAdditionalGuest] = useState("");
+  const [additionalGuests, setAdditionalGuests] = useState("");
   const [error, setError] = useState("");
   const { id } = useParams();
   const [confirmedAttendance, setConfirmedAttendance] = useState(false);
@@ -47,8 +47,9 @@ const InvitationCard = ({ event }) => {
         name: name,
         email: email,
         attendance: attendance,
-        additionalGuest: parseInt(additionalGuest),
+        additionalGuests: parseInt(additionalGuests),
       };
+      console.log(payload.additionalGuest)
       const response = await axios.put(
         `${import.meta.env.VITE_API_URL}/events/${id}/confirm`,
         payload
@@ -57,7 +58,7 @@ const InvitationCard = ({ event }) => {
       setName("");
       setEmail("");
       setAttendance(null);
-      setAdditionalGuest("");
+      setAdditionalGuests("");
     } catch (error) {
       console.log(error);
       setError("Error al enviar la confirmacion");
@@ -143,11 +144,11 @@ const InvitationCard = ({ event }) => {
                   {" "}
                   <label htmlFor="">Voy acompañado</label>
                   <select
-                    name="additionalGuest"
-                    id="additionalGuest"
-                    value={additionalGuest}
+                    name="additionalGuests"
+                    id="additionalGuests"
+                    value={additionalGuests}
                     defaultValue={"0"}
-                    onChange={(event) => setAdditionalGuest(event.target.value)}
+                    onChange={(event) => setAdditionalGuests(event.target.value)}
                   >
                     <option value="0">Solo yo</option>
                     <option value="1">+1 invitado</option>

@@ -1,16 +1,23 @@
 import React from "react";
 import { CiUser } from "react-icons/ci";
-const Item = ({ id, name, email, attendance }) => {
+import { MdDone } from "react-icons/md";
+import { RxCross1 } from "react-icons/rx";
+const Item = ({ id, name, email, attendance, additionalGuests }) => {
   return (
-    <div className=" border-b flex items-center justify-between p-2 ">
-      <div className="flex items-center justify-center gap-2">
-        <CiUser size={"2em"} />
-        <div className="">
+    <div className=" flex border-b justify-between items-center gap-4 py-1 px-2 ">
+      <div className=" flex items-center gap-1 p-2 grow-1">
+        <CiUser size={"2.5em"}/>
+        <div>
           <p>{name}</p>
-          <p>{email}</p>
+          <p className="text-sm ">{email}</p>
         </div>
       </div>
-      <span>{attendance ? "Attended" : "Not Attended"}</span>
+      <div className="flex items-center justify-center">
+        <span>{attendance ? <MdDone/> : <RxCross1/>}</span>
+      </div>
+      <div className="flex items-center justify-end">
+        <span>{additionalGuests}</span>
+      </div>
     </div>
   );
 };

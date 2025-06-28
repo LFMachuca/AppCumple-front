@@ -40,9 +40,14 @@ const EventDashboard = () => {
   };
 
   const getTotalAttendees = (attendees) => {
-    return attendees.filter(attendee => attendee.attendance === true).length;
-  }
-
+    return attendees.reduce((total, attendee) => {
+      if (attendee.attendance === true) {
+        const additionalGuests = parseInt(attendee.additionalGuests) || 0;
+        return total + 1 + additionalGuests;
+      }
+      return total;
+    }, 0);
+  };
   return (
     <div className="bg-indigo-900  min-h-screen space-y-5 p-4">
       <DashboardCard>
