@@ -50,7 +50,7 @@ const InvitationCard = ({ event }) => {
         email: email,
       };
       const response = await axios.put(
-        `http://localhost:8000/events/${id}/confirm`,
+        `${import.meta.env.VITE_API_URL}/events/${id}/confirm`,
         payload
       );
       setConfirmedAttendance(response.statusText);
