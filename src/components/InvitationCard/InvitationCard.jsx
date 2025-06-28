@@ -14,10 +14,7 @@ const InvitationCard = ({ event }) => {
   const [additionalGuest, setAdditionalGuest] = useState("");
   const [error, setError] = useState("");
   const { id } = useParams();
-  const [confirmedAttendance, setConfirmedAttendance] = useState("");
-  const buttonSelectedHandler = (opts) => {
-    setAttendance(opts);
-  };
+  const [confirmedAttendance, setConfirmedAttendance] = useState(null);
 
   const formatDate = (date) => {
     return new Intl.DateTimeFormat("es-ES", {
@@ -97,14 +94,17 @@ const InvitationCard = ({ event }) => {
           </div>
         </div>
       </div>
-      <div className=" bg-white p-4 rounded-xl space-y-3">
+      {confirmedAttendance ? (
+        <div className="bg-white p-4 rounded-xl ">
+          <h3>Gracias por confirmar</h3>
+        </div> ) : (<div className=" bg-white p-4 rounded-xl space-y-3">
         <h2>Por favor confirma tu asistencia</h2>
         <form onSubmit={formHandler} className="flex flex-col gap-3 ">
           <div className="btns-form gap-5">
             <button
               type="button"
               className={attendance ? "yes-btn active" : "yes-btn"}
-              onClick={() => buttonSelectedHandler(true)}
+              onClick={() => setAttendance(true)}
             >
               {" "}
               Si, ahi voy a estar
@@ -112,7 +112,7 @@ const InvitationCard = ({ event }) => {
             <button
               type="button"
               className={!attendance ? "no-btn active" : "no-btn"}
-              onClick={() => buttonSelectedHandler(false)}
+              onClick={() => setAttendance(false)}
             >
               {" "}
               No, estoy complicado
@@ -153,9 +153,10 @@ const InvitationCard = ({ event }) => {
           <button type="submit" className="confirm-btn">
             Enviar confirmacion
           </button>
-          {confirmedAttendance && <h3>Gracias por confirmar</h3>}
         </form>
       </div>
+      )}
+      
     </div>
   );
 };
