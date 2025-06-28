@@ -13,7 +13,7 @@ const EventDashboard = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    axios(`${process.env.API_URL}/events/${id}/rsvp`)
+    axios(`${import.meta.env.API_URL}/events/${id}/rsvp`)
       .then((res) => {
         const data = res.data.response;
         const getEvent = { id: res.data.response._id, ...data };
