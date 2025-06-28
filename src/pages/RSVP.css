@@ -1,0 +1,9 @@
+.event-detail-container{
+    border: 1px solid;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #240757;
+    padding: 20px;
+}
