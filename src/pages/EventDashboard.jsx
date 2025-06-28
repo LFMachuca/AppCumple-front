@@ -25,7 +25,6 @@ const EventDashboard = () => {
   if (!event) {
     return <p>cargando</p>;
   }
-  console.log(event);
 
   const formatDate = (date) => {
     return new Intl.DateTimeFormat("es-ES", {
@@ -39,6 +38,10 @@ const EventDashboard = () => {
       timeZone: "America/Buenos_Aires",
     }).format(new Date(date));
   };
+
+  const getTotalAttendees = (attendees) => {
+    return attendees.filter(attendee => attendee.attendance === true).length;
+  }
 
   return (
     <div className="bg-indigo-900  min-h-screen space-y-5 p-4">
@@ -71,7 +74,7 @@ const EventDashboard = () => {
       <DashboardCard>
         <div className="flex justify-between px-4">
           <h3 className="text-xl ">Total de asistentes:</h3>
-          <p className="text-xl font-bold">{event.attendees ? event.attendees.length : 0}</p>
+          <p className="text-xl font-bold">{getTotalAttendees(event.attendees)}</p>
         </div>
       </DashboardCard>
     </div>

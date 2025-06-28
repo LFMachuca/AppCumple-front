@@ -14,7 +14,10 @@ const InvitationCard = ({ event }) => {
   const [additionalGuest, setAdditionalGuest] = useState("");
   const [error, setError] = useState("");
   const { id } = useParams();
-  const [confirmedAttendance, setConfirmedAttendance] = useState(null);
+  const [confirmedAttendance, setConfirmedAttendance] = useState(false);
+  const buttonSelectedHandler = (opts) => {
+    setAttendance(opts);
+  };
 
   const formatDate = (date) => {
     return new Intl.DateTimeFormat("es-ES", {
@@ -38,20 +41,19 @@ const InvitationCard = ({ event }) => {
       setError("Ingresa nombre o email");
       return;
     }
-    if (!attendance) {
-      console.log("mensajito de tristesa");
-    }
+
     try {
       const payload = {
         name: name,
         email: email,
+        attendance: attendance,
+        additionalGuest: parseInt(additionalGuest),
       };
       const response = await axios.put(
         `${import.meta.env.VITE_API_URL}/events/${id}/confirm`,
         payload
       );
       setConfirmedAttendance(response.statusText);
-      console.log(response);
       setName("");
       setEmail("");
       setAttendance(null);
@@ -94,69 +96,79 @@ const InvitationCard = ({ event }) => {
           </div>
         </div>
       </div>
-      {confirmedAttendance ? (
-        <div className="bg-white p-4 rounded-xl ">
+      <div className=" bg-white p-4 rounded-xl space-y-3">
+        {confirmedAttendance ? (
           <h3>Gracias por confirmar</h3>
-        </div> ) : (<div className=" bg-white p-4 rounded-xl space-y-3">
-        <h2>Por favor confirma tu asistencia</h2>
-        <form onSubmit={formHandler} className="flex flex-col gap-3 ">
-          <div className="btns-form gap-5">
-            <button
-              type="button"
-              className={attendance ? "yes-btn active" : "yes-btn"}
-              onClick={() => setAttendance(true)}
-            >
-              {" "}
-              Si, ahi voy a estar
-            </button>
-            <button
-              type="button"
-              className={!attendance ? "no-btn active" : "no-btn"}
-              onClick={() => setAttendance(false)}
-            >
-              {" "}
-              No, estoy complicado
-            </button>
-          </div>
-          {/*Informacion del invitado */}
-          <label htmlFor="">Nombre</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            placeholder="Nombre y Apellido"
-          />
-          <label htmlFor="">Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            placeholder="Email"
-          />
-          {/*Informacion Adicional*/}
-          <label htmlFor="">Voy acompañado</label>
-          <select
-            name="additionalGuest"
-            id="additionalGuest"
-            value={additionalGuest}
-            defaultValue={"0"}
-            onChange={(event) => setAdditionalGuest(event.target.value)}
-          >
-            <option value="0">Solo yo</option>
-            <option value="1">+1 invitado</option>
-            <option value="2">+2 invitados</option>
-            <option value="3">+3 invitados</option>
-            <option value="4">+4 invitados</option>
-          </select>
-          {error && <p>{error}</p>}
-          {/*Submit Button */}
-          <button type="submit" className="confirm-btn">
-            Enviar confirmacion
-          </button>
-        </form>
+        ) : (
+          <>
+            <h2>Por favor confirma tu asistencia</h2>
+
+            <form onSubmit={formHandler} className="flex flex-col gap-3 ">
+              <div className="btns-form gap-5">
+                <button
+                  type="button"
+                  className={attendance ? "yes-btn active" : "yes-btn"}
+                  onClick={() => buttonSelectedHandler(true)}
+                >
+                  {" "}
+                  Si, ahi voy a estar
+                </button>
+                <button
+                  type="button"
+                  className={!attendance ? "no-btn active" : "no-btn"}
+                  onClick={() => buttonSelectedHandler(false)}
+                >
+                  {" "}
+                  No, estoy complicado
+                </button>
+              </div>
+              {/*Informacion del invitado */}
+              <label htmlFor="">Nombre</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                placeholder="Nombre y Apellido"
+              />
+              <label htmlFor="">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="Email"
+              />
+              {/*Informacion Adicional*/}
+              {attendance ? (
+                <>
+                  {" "}
+                  <label htmlFor="">Voy acompañado</label>
+                  <select
+                    name="additionalGuest"
+                    id="additionalGuest"
+                    value={additionalGuest}
+                    defaultValue={"0"}
+                    onChange={(event) => setAdditionalGuest(event.target.value)}
+                  >
+                    <option value="0">Solo yo</option>
+                    <option value="1">+1 invitado</option>
+                    <option value="2">+2 invitados</option>
+                    <option value="3">+3 invitados</option>
+                    <option value="4">+4 invitados</option>
+                  </select>
+                </>
+              ) : (
+                ""
+              )}
+
+              {error && <p>{error}</p>}
+              {/*Submit Button */}
+              <button type="submit" className="confirm-btn">
+                Enviar confirmacion
+              </button>
+            </form>
+          </>
+        )}
       </div>
-      )}
-      
     </div>
   );
 };

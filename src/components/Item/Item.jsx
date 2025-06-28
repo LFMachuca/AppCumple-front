@@ -1,6 +1,6 @@
 import React from "react";
 import { CiUser } from "react-icons/ci";
-const Item = ({ id, name, confirmedAt, email }) => {
+const Item = ({ id, name, email, attendance }) => {
   return (
     <div className=" border-b flex items-center justify-between p-2 ">
       <div className="flex items-center justify-center gap-2">
@@ -10,7 +10,7 @@ const Item = ({ id, name, confirmedAt, email }) => {
           <p>{email}</p>
         </div>
       </div>
-      <span>{confirmedAt ? "Attended" : "Not Attended"}</span>
+      <span>{attendance ? "Attended" : "Not Attended"}</span>
     </div>
   );
 };
